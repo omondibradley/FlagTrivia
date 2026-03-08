@@ -97,3 +97,19 @@ InitTestScene*.unity*
 
 # Auto-generated scenes by play mode tests
 /[Aa]ssets/[Ii]nit[Tt]est[Ss]cene*.unity*
+
+# Dojo / Cairo build artifacts
+target/
+manifest_dev.json
+manifest_release.json
+
+# OS
+Thumbs.db
+Desktop.ini
+SEPOLIA_DEPLOYMENT_GUIDE.md
+SUBMISSION_DRAFT.md
+TESTING_GUIDE.md
+WEBGL_ITCH_GUIDE.md
+
+# LeanTween
+/[Aa]ssets/LeenTween

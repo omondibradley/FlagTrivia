@@ -1,0 +1,177 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 447f387ea9828134cad9e34bdf812b4f, type: 3}
+  m_Name: QuestionBank 1
+  m_EditorClassIdentifier: Assembly-CSharp::QuestionBank
+  questions:
+  - questionId: 1
+    flagSprite: {fileID: 21300000, guid: 545e28ec0a894424b861ee393a49fe34, type: 3}
+    countryName: Algeria
+  - questionId: 2
+    flagSprite: {fileID: 21300000, guid: d9622a4ccb5c9ea47b5d16e13105134e, type: 3}
+    countryName: Angola
+  - questionId: 3
+    flagSprite: {fileID: 21300000, guid: 849dfd00c6036ac4683a8bb9657ade71, type: 3}
+    countryName: Benin
+  - questionId: 4
+    flagSprite: {fileID: 21300000, guid: 12184e057610ec1409e0bae779bd6b45, type: 3}
+    countryName: Botswana
+  - questionId: 5
+    flagSprite: {fileID: 21300000, guid: d2230908f7c73bf43afef655dc413f00, type: 3}
+    countryName: Burkina Faso
+  - questionId: 6
+    flagSprite: {fileID: 21300000, guid: bcc89628cf315524f94b74300c3fa21a, type: 3}
+    countryName: Burundi
+  - questionId: 7
+    flagSprite: {fileID: 21300000, guid: ee4cca67f1ec2434399fcb5cdebc7475, type: 3}
+    countryName: Cape Verde
+  - questionId: 8
+    flagSprite: {fileID: 21300000, guid: 79472e55aa051c441b29ae6305c16b14, type: 3}
+    countryName: Cameroon
+  - questionId: 9
+    flagSprite: {fileID: 21300000, guid: 8860cabb74cbd1341b39724bbb87d3b6, type: 3}
+    countryName: Central African Republic
+  - questionId: 10
+    flagSprite: {fileID: 21300000, guid: 6d503b83c331d8c49af94a54d725901a, type: 3}
+    countryName: Chad
+  - questionId: 11
+    flagSprite: {fileID: 21300000, guid: 56b79121f83100e419b6746991fc7802, type: 3}
+    countryName: The Comoros
+  - questionId: 12
+    flagSprite: {fileID: 21300000, guid: 00961b327755fbf42887f38e6788c44e, type: 3}
+    countryName: Democratic Republic of the Congo
+  - questionId: 13
+    flagSprite: {fileID: 21300000, guid: 69b14dcd83445f748bf8a1e0002a0a52, type: 3}
+    countryName: Republic of the Congo
+  - questionId: 14
+    flagSprite: {fileID: 21300000, guid: 3c68229f144274044bae7aa0e4506b55, type: 3}
+    countryName: Cote d'Ivoire
+  - questionId: 15
+    flagSprite: {fileID: 21300000, guid: 314fb02f429ef8f4cb66fe5caac0ce95, type: 3}
+    countryName: Djibouti
+  - questionId: 16
+    flagSprite: {fileID: 21300000, guid: 08fbc132c5fbff74197ce312679950fe, type: 3}
+    countryName: Egypt
+  - questionId: 17
+    flagSprite: {fileID: 21300000, guid: 1c4db82c1377fbd4b8b9ed8d46e045dc, type: 3}
+    countryName: Equatorial Guinea
+  - questionId: 18
+    flagSprite: {fileID: 21300000, guid: 467bbb62069008444b1e20f4ff22a906, type: 3}
+    countryName: Eritrea
+  - questionId: 19
+    flagSprite: {fileID: 21300000, guid: cf81a687157837843bbc5e07f9d240a0, type: 3}
+    countryName: Eswatini
+  - questionId: 20
+    flagSprite: {fileID: 21300000, guid: 542fde3faacaf5042a7d98de4948e2dd, type: 3}
+    countryName: Ethiopia
+  - questionId: 21
+    flagSprite: {fileID: 21300000, guid: 4e77a08827e0fe448bc0bfc2313ef60e, type: 3}
+    countryName: Gabon
+  - questionId: 22
+    flagSprite: {fileID: 21300000, guid: 6d503b83c331d8c49af94a54d725901a, type: 3}
+    countryName: The Gambia
+  - questionId: 23
+    flagSprite: {fileID: 21300000, guid: 5e628f6b42709074683f8395fb2b08db, type: 3}
+    countryName: Ghana
+  - questionId: 24
+    flagSprite: {fileID: 21300000, guid: 33be4171a7c77664bb79ab55852041be, type: 3}
+    countryName: Guinea
+  - questionId: 25
+    flagSprite: {fileID: 21300000, guid: dd64c5c4db3561a4e9e34ae01003f7fc, type: 3}
+    countryName: Guinea Bissau
+  - questionId: 26
+    flagSprite: {fileID: 21300000, guid: 0a8e5aded20e83649a434159307cbe53, type: 3}
+    countryName: Kenya
+  - questionId: 27
+    flagSprite: {fileID: 21300000, guid: bf6dc996c1543b14ea789a18a5efeb91, type: 3}
+    countryName: Lesotho
+  - questionId: 28
+    flagSprite: {fileID: 21300000, guid: 25e6ba423a61db241afeea8c5844a526, type: 3}
+    countryName: Liberia
+  - questionId: 29
+    flagSprite: {fileID: 21300000, guid: cf81c81ddf5145f48bad78d271e3de39, type: 3}
+    countryName: Libya
+  - questionId: 30
+    flagSprite: {fileID: 21300000, guid: c8d293fcce372464e9a1a1b34bdfbbc9, type: 3}
+    countryName: Madagascar
+  - questionId: 31
+    flagSprite: {fileID: 21300000, guid: f354321e64024a54d922751e237cd909, type: 3}
+    countryName: Malawi
+  - questionId: 32
+    flagSprite: {fileID: 21300000, guid: 967f0a63f1fc7b048b29973ef17b61f9, type: 3}
+    countryName: Mali
+  - questionId: 33
+    flagSprite: {fileID: 21300000, guid: a3c2434c1b3d37841b513c843117fe92, type: 3}
+    countryName: Mauritania
+  - questionId: 34
+    flagSprite: {fileID: 21300000, guid: 5be83fa7ff12a8d41883dc82c0beb5be, type: 3}
+    countryName: Mauritius
+  - questionId: 35
+    flagSprite: {fileID: 21300000, guid: db5ff13576d5bc8438210bf2730e3797, type: 3}
+    countryName: Morroco
+  - questionId: 36
+    flagSprite: {fileID: 21300000, guid: 96fca87b888ee2b42aabbb7db5226d61, type: 3}
+    countryName: Mozambique
+  - questionId: 37
+    flagSprite: {fileID: 21300000, guid: c665bfa3e3ec35b42afffc8c1f2fd547, type: 3}
+    countryName: Namibia
+  - questionId: 38
+    flagSprite: {fileID: 21300000, guid: 5348131daa0e9c04ea785eb28eda9fad, type: 3}
+    countryName: Niger
+  - questionId: 39
+    flagSprite: {fileID: 21300000, guid: 503d0cd3fc8548647b5221f43def0570, type: 3}
+    countryName: Nigeria
+  - questionId: 40
+    flagSprite: {fileID: 21300000, guid: 3488739b3e61e934c8f8f29e4eb13cbb, type: 3}
+    countryName: Rwanda
+  - questionId: 41
+    flagSprite: {fileID: 21300000, guid: e9044ce9cad8e7842bc967cda57a9e87, type: 3}
+    countryName: Sao Tome and Principe
+  - questionId: 42
+    flagSprite: {fileID: 21300000, guid: 9cb21ca826efecf4280d1f6dce6ca8df, type: 3}
+    countryName: Senegal
+  - questionId: 43
+    flagSprite: {fileID: 21300000, guid: 092f49201492ea14789c6f17251ac0bf, type: 3}
+    countryName: Seychelles
+  - questionId: 44
+    flagSprite: {fileID: 21300000, guid: 15f39b31827f1e242bb03347588c97af, type: 3}
+    countryName: Sierra Leone
+  - questionId: 45
+    flagSprite: {fileID: 21300000, guid: 4cfc58f7114d12245af9f88ead248b39, type: 3}
+    countryName: Somalia
+  - questionId: 46
+    flagSprite: {fileID: 21300000, guid: ed8774295ac88bc42b1e61582798377c, type: 3}
+    countryName: South Africa
+  - questionId: 47
+    flagSprite: {fileID: 21300000, guid: 92aa9c459738715439b688922e6ac01c, type: 3}
+    countryName: South Sudan
+  - questionId: 48
+    flagSprite: {fileID: 21300000, guid: 9ad83a6d90dba0b498fbea2d5292c59a, type: 3}
+    countryName: Sudan
+  - questionId: 49
+    flagSprite: {fileID: 21300000, guid: 635893a96ae7520468060170a2a28401, type: 3}
+    countryName: Tanzania
+  - questionId: 50
+    flagSprite: {fileID: 21300000, guid: 94dbb98fdc8551149ab4375d44518f86, type: 3}
+    countryName: Togo
+  - questionId: 51
+    flagSprite: {fileID: 21300000, guid: ad0d6ccc98f6a3749aa081b713a1727a, type: 3}
+    countryName: Tunisia
+  - questionId: 52
+    flagSprite: {fileID: 21300000, guid: 9fa5c8cede144154abe5d57222dda447, type: 3}
+    countryName: Uganda
+  - questionId: 53
+    flagSprite: {fileID: 21300000, guid: d94c2bc0aa9dbce46b2eb126570681d8, type: 3}
+    countryName: Zambia
+  - questionId: 54
+    flagSprite: {fileID: 21300000, guid: 64d83c0bcd487f74d81c6f3200287477, type: 3}
+    countryName: Zimbabwe
