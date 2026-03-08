@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <title>{{{ PRODUCT_NAME }}}</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { background: #1a1a2e; width: 100vw; height: 100vh; overflow: hidden; }
+    #unity-canvas { width: 100%; height: 100%; display: block; }
+    #loading {
+      position: fixed; top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      color: #fff; font: 18px sans-serif;
+      text-align: center; z-index: 10;
+    }
+    #loading-bar {
+      width: 300px; height: 6px;
+      background: #333; border-radius: 3px;
+      margin-top: 12px; overflow: hidden;
+    }
+    #loading-fill {
+      height: 100%; width: 0%;
+      background: #5b8dee; border-radius: 3px;
+      transition: width 0.2s;
+    }
+  </style>
+</head>
+<body>
+  <div id="loading">
+    <div id="loading-status">Initializing...</div>
+    <div id="loading-bar"><div id="loading-fill"></div></div>
+  </div>
+  <canvas id="unity-canvas" tabindex="-1"></canvas>
+
+  <script type="module">
+    const status = document.getElementById('loading-status');
+    const fill   = document.getElementById('loading-fill');
+    const loading = document.getElementById('loading');
+
+    async function initDojo() {
+      status.textContent = 'Loading Dojo...';
+      console.log('[Dojo] Importing dojo_wasm_bg.js...');
+      const dojoJs = await import('./dojo_wasm_bg.js');
+
+      console.log('[Dojo] Fetching dojo_wasm_bg.wasm...');
+      const wasmResponse = await fetch('./dojo_wasm_bg.wasm');
+      const wasmBytes = await wasmResponse.arrayBuffer();
+
+      console.log('[Dojo] Instantiating WASM...');
+      const importObject = { './dojo_wasm_bg.js': dojoJs };
+      const { instance } = await WebAssembly.instantiate(wasmBytes, importObject);
+
+      dojoJs.__wbg_set_wasm(instance.exports);
+      if (instance.exports.__wbindgen_start) {
+        instance.exports.__wbindgen_start();
+      }
+
+      window.wasm_bindgen = dojoJs;
+      console.log('[Dojo] Ready. ToriiClient:', typeof dojoJs.ToriiClient);
+    }
+
+    async function startUnity() {
+      status.textContent = 'Loading game...';
+
+      var buildUrl   = "Build";
+      var loaderUrl  = buildUrl + "/{{{ LOADER_FILENAME }}}";
+      var config = {
+        arguments: [],
+        dataUrl:      buildUrl + "/{{{ DATA_FILENAME }}}",
+        frameworkUrl: buildUrl + "/{{{ FRAMEWORK_FILENAME }}}",
+#if USE_WASM
+        codeUrl:      buildUrl + "/{{{ CODE_FILENAME }}}",
+#endif
+#if SYMBOLS_FILENAME
+        symbolsUrl:   buildUrl + "/{{{ SYMBOLS_FILENAME }}}",
+#endif
+        streamingAssetsUrl: "StreamingAssets",
+        companyName:   {{{ JSON.stringify(COMPANY_NAME) }}},
+        productName:   {{{ JSON.stringify(PRODUCT_NAME) }}},
+        productVersion:{{{ JSON.stringify(PRODUCT_VERSION) }}},
+      };
+
+      console.log('[Unity] Loading loader:', loaderUrl);
+      await new Promise((resolve, reject) => {
+        const script = document.createElement('script');
+        script.src = loaderUrl;
+        script.onload = resolve;
+        script.onerror = () => reject(new Error('Failed to load: ' + loaderUrl));
+        document.head.appendChild(script);
+      });
+
+      console.log('[Unity] Creating instance...');
+      const canvas = document.getElementById('unity-canvas');
+      await createUnityInstance(canvas, config, (progress) => {
+        fill.style.width = Math.round(progress * 100) + '%';
+        status.textContent = 'Loading game... ' + Math.round(progress * 100) + '%';
+      });
+
+      loading.style.display = 'none';
+      console.log('[Unity] Ready.');
+    }
+
+    initDojo()
+      .then(startUnity)
+      .catch((err) => {
+        const msg = err instanceof Error ? err.message : String(err);
+        status.textContent = 'Error: ' + msg;
+        console.error('[Error]', err);
+      });
+  </script>
+</body>
+</html>

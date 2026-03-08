@@ -19,6 +19,8 @@ public class GameManager : MonoBehaviour
     [Header("Menu UI")]
     public Button startButton;
     public Button leaderboardButton;
+    public Button connectButton;
+    public TMP_Text playerNameText;
 
     [Header("Game UI")]
     public Image flagImage;
@@ -61,13 +63,15 @@ public class GameManager : MonoBehaviour
     private int[] shuffledOptionIndices = new int[4];
     private uint sessionId;
 
-    async void Start()
+    void Start()
     {
         startButton.onClick.AddListener(OnStartGame);
         leaderboardButton.onClick.AddListener(OnShowLeaderboard);
         playAgainButton.onClick.AddListener(OnStartGame);
         resultsLeaderboardButton.onClick.AddListener(OnShowLeaderboard);
         backButton.onClick.AddListener(OnBackToMenu);
+        if (connectButton != null)
+            connectButton.onClick.AddListener(OnConnectWallet);
 
         for (int i = 0; i < answerButtons.Length; i++)
         {
@@ -76,10 +80,29 @@ public class GameManager : MonoBehaviour
         }
 
         SetState(GameState.Menu);
-        Debug.Log($"dojoClient is {(dojoClient == null ? "NULL" : "assigned")}");
-        // Connect to Dojo in the background
-        if (dojoClient != null)
-            await dojoClient.Connect();
+        UpdateConnectionUI();
+    }
+
+    async void OnConnectWallet()
+    {
+        if (connectButton != null) connectButton.interactable = false;
+        if (playerNameText != null) playerNameText.text = "Connecting...";
+
+        bool success = dojoClient != null && await dojoClient.Connect();
+
+        UpdateConnectionUI();
+        if (connectButton != null) connectButton.interactable = !success;
+    }
+
+    void UpdateConnectionUI()
+    {
+        bool connected = dojoClient != null && dojoClient.IsConnected;
+
+        if (playerNameText != null)
+            playerNameText.text = connected ? $"Connected as: {dojoClient.PlayerName}" : "";
+
+        if (connectButton != null)
+            connectButton.gameObject.SetActive(!connected);
     }
 
     void Update()

@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Flag Trivia</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { background: #1a1a2e; display: flex; justify-content: center; align-items: center; height: 100vh; overflow: hidden; }
+    #game-container canvas { display: block; }
+    #loading-overlay {
+      position: fixed; inset: 0; background: #1a1a2e;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      color: #fff; font: 18px sans-serif; gap: 16px; z-index: 999;
+    }
+    #loading-bar { width: 300px; height: 6px; background: #333; border-radius: 3px; overflow: hidden; }
+    #loading-fill { height: 100%; width: 0%; background: #5b8dee; border-radius: 3px; transition: width 0.2s; }
+  </style>
+  <script type="module" crossorigin src="/assets/index-B7iZeG4s.js"></script>
+</head>
+<body>
+  <div id="loading-overlay">
+    <div id="loading-status">Initializing...</div>
+    <div id="loading-bar"><div id="loading-fill"></div></div>
+  </div>
+  <div id="game-container"></div>
+
+  <!--
+    init-dojo.js lives in public/ so Vite never bundles it.
+    It sets window.__dojoReady = Promise<bool> synchronously.
+    src/main.js awaits that promise before creating the Phaser game.
+  -->
+  <script type="module" src="/init-dojo.js"></script>
+</body>
+</html>

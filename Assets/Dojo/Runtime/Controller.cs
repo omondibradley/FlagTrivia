@@ -42,6 +42,13 @@ namespace Dojo
             this.controller = controller;
         }
 
+        [AOT.MonoPInvokeCallback(typeof(dojo.FnPtr_ControllerAccountPtr_Void.@delegate))]
+        private static unsafe void OnControllerConnected(dojo.ControllerAccount* controllerPtr)
+        {
+            var controller = new ControllerAccount(controllerPtr);
+            connectionTask.TrySetResult(controller);
+        }
+
         public static ControllerAccount GetAccount(Policy[] policies, FieldElement chainId)
         {
             var nativePolicies = policies.Select(p => p.ToNative()).ToArray();
@@ -79,12 +86,7 @@ namespace Dojo
                 }
             }
 
-            onConnectCallback = new dojo.FnPtr_ControllerAccountPtr_Void((controllerPtr) =>
-            {
-                var controller = new ControllerAccount(controllerPtr);
-                connectionTask.TrySetResult(controller);
-            });
-
+            onConnectCallback = new dojo.FnPtr_ControllerAccountPtr_Void(OnControllerConnected);
             dojo.controller_connect(crpcUrl, policiesPtr, (UIntPtr)policies.Length, onConnectCallback);
 
             return connectionTask.Task;

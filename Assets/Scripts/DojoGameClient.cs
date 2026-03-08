@@ -14,14 +14,14 @@ public class DojoGameClient : MonoBehaviour
 
     [Header("Config")]
     public string rpcUrl = "http://localhost:5050";
-    public string masterAddress = "0x127fd5f1fe78a71f8bcd1fec63e3fe2f0486b6ecd5c86a0466c3a21fa5cfcec";
-    public string masterPrivateKey = "0xc5b2fcab997346f3ea1c00b002ecf6f382c5f9c9659a3894eb783c5320f912";
-    public string actionsAddress = ""; // We'll fill this from the manifest
+    public string actionsAddress = "";
 
-    private Account burnerAccount;
+    private ControllerAccount controllerAccount;
     private bool isConnected = false;
 
     public bool IsConnected => isConnected;
+    public string PlayerName => controllerAccount?.Username ?? "";
+    public string PlayerAddress => controllerAccount?.Address.Hex() ?? "";
 
     public struct LeaderboardData
     {
@@ -35,21 +35,27 @@ public class DojoGameClient : MonoBehaviour
     {
         try
         {
-            var provider = new JsonRpcClient(rpcUrl);
-            var signer = new SigningKey(masterPrivateKey);
-            var masterAccount = new Account(provider, signer, new FieldElement(masterAddress));
+            var actionsField = new FieldElement(actionsAddress);
+            var policies = new Policy[]
+            {
+                new Policy(actionsField, "start_game", "Start a new game session"),
+                new Policy(actionsField, "submit_answer", "Submit an answer"),
+            };
 
-            BurnerManager burnerManager = new BurnerManager(provider, masterAccount);
-            burnerAccount = await burnerManager.DeployBurner();
+            controllerAccount = await ControllerAccount.Connect(rpcUrl, policies);
+            isConnected = controllerAccount != null;
 
-            isConnected = true;
-            Debug.Log("Dojo connected! Burner account deployed.");
-            Debug.Log($"Burner address: {burnerAccount.Address.Hex()}");
-            return true;
+            if (isConnected)
+            {
+                Debug.Log($"Controller connected! Username: {controllerAccount.Username}");
+                Debug.Log($"Address: {controllerAccount.Address.Hex()}");
+            }
+
+            return isConnected;
         }
         catch (Exception e)
         {
-            Debug.LogError($"Dojo connection failed: {e.Message}");
+            Debug.LogError($"Controller connection failed: {e.Message}");
             isConnected = false;
             return false;
         }
@@ -59,7 +65,7 @@ public class DojoGameClient : MonoBehaviour
     {
         if (!isConnected)
         {
-            Debug.LogWarning("Not connected to Dojo");
+            Debug.LogWarning("Not connected to Controller");
             return false;
         }
 
@@ -72,7 +78,7 @@ public class DojoGameClient : MonoBehaviour
                 calldata = new dojo.FieldElement[] { new FieldElement(sessionId).Inner }
             };
 
-            await burnerAccount.ExecuteRaw(new dojo.Call[] { call });
+            controllerAccount.ExecuteRaw(new dojo.Call[] { call });
             Debug.Log($"start_game called with session {sessionId}");
             return true;
         }
@@ -87,7 +93,7 @@ public class DojoGameClient : MonoBehaviour
     {
         if (!isConnected)
         {
-            Debug.LogWarning("Not connected to Dojo");
+            Debug.LogWarning("Not connected to Controller");
             return false;
         }
 
@@ -104,7 +110,7 @@ public class DojoGameClient : MonoBehaviour
                 }
             };
 
-            await burnerAccount.ExecuteRaw(new dojo.Call[] { call });
+            controllerAccount.ExecuteRaw(new dojo.Call[] { call });
             Debug.Log($"submit_answer called: session={sessionId}, answer={answerIndex}");
             return true;
         }
