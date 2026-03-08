@@ -1,4 +1,5 @@
 import { fetchLeaderboard } from "../dojo/torii.js";
+import { getDisplayName, isConnected } from "../dojo/controller.js";
 
 const BG   = 0x1a1a2e;
 const DARK = 0x16213e;
@@ -45,6 +46,12 @@ export class LeaderboardScene extends Phaser.Scene {
     backBg.on("pointerout",  () => backBg.setFillStyle(DARK));
     backBg.on("pointerup",   () => this.scene.start("Menu"));
 
+    // Player stats banner placeholder (filled after data loads)
+    this.statsBg  = this.add.rectangle(W / 2, H - 82, W - 20, 36, 0x0d1f3c).setVisible(false);
+    this.statsTxt = this.add.text(W / 2, H - 82, "", {
+      fontSize: "13px", fontFamily: "Arial", color: "#5b8dee", align: "center",
+    }).setOrigin(0.5).setVisible(false);
+
     // Load entries
     fetchLeaderboard().then((entries) => this.displayEntries(entries, W));
   }
@@ -60,6 +67,20 @@ export class LeaderboardScene extends Phaser.Scene {
         })
         .setOrigin(0.5);
       return;
+    }
+
+    // Player stats banner
+    if (isConnected()) {
+      const myName = getDisplayName();
+      const myIdx  = myName ? entries.findIndex((e) => e.player === myName) : -1;
+      if (myIdx !== -1) {
+        const rank  = myIdx + 1;
+        const total = entries.length;
+        const pct   = Math.ceil((rank / total) * 100);
+        this.statsTxt.setText(`You (${myName})  ·  Rank #${rank} of ${total}  ·  Top ${pct}%`);
+        this.statsBg.setVisible(true);
+        this.statsTxt.setVisible(true);
+      }
     }
 
     entries.forEach((entry, i) => {

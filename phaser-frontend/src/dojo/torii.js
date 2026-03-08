@@ -1,4 +1,5 @@
 import { TORII_URL, WORLD_ADDRESS } from "../config.js";
+import { getAddress, getUsername } from "./controller.js";
 
 let toriiClient = null;
 
@@ -14,23 +15,29 @@ async function getClient() {
   return toriiClient;
 }
 
+// Model addresses are zero-padded to 32 bytes (0x0682e...).
+// Controller reports them without padding (0x682e...).
+function normalizeAddress(addr) {
+  if (!addr) return "";
+  const stripped = addr.replace(/^0x0*/, "");
+  return "0x" + (stripped || "0");
+}
+
 export async function fetchLeaderboard() {
   try {
     const client = await getClient();
-    const query = {
-      pagination: { limit: 20, offset: 0, order_by: [], direction: "Forward" },
-      no_hashed_keys: false,
-      models: ["flag_trivia-LeaderboardEntry"],
-      historical: false,
-    };
-    const page = await client.getEntities(query);
-
-    // Page may be { items: [...] } or an object keyed by entity hash
+    const page = await client.getAllEntities(100, null);
     const rawItems = page?.items ?? Object.values(page ?? {});
+
+    // Username is only available for the connected player.
+    // Cartridge's API blocks cross-origin fetches from itch.io,
+    // so other players fall back to shortened addresses.
+    const connectedNorm = normalizeAddress(getAddress() ?? "");
+    const connectedUsername = getUsername();
 
     const entries = rawItems
       .map((entity) => {
-        const model = entity["flag_trivia-LeaderboardEntry"];
+        const model = entity.models?.["flag_trivia-LeaderboardEntry"];
         if (!model) return null;
         const get = (key) => {
           const v = model[key];
@@ -40,8 +47,13 @@ export async function fetchLeaderboard() {
           const v = model[key];
           return typeof v === "object" ? String(v.value ?? v) : String(v ?? "");
         };
+        const norm = normalizeAddress(getStr("player"));
+        const isMe = connectedNorm && norm === connectedNorm;
+        const display = isMe && connectedUsername
+          ? connectedUsername
+          : norm.slice(0, 6) + "..." + norm.slice(-4);
         return {
-          player:         getStr("player"),
+          player:         display,
           score:          get("score"),
           correctCount:   get("correct_count"),
           totalQuestions: get("total_questions"),

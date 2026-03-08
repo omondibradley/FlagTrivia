@@ -48,18 +48,34 @@ export class MenuScene extends Phaser.Scene {
       this.onConnect()
     );
 
-    // Start Game button
+    // Start Game button (locked until wallet connected)
     this.startBtn = this.makeButton(W / 2, H * 0.60, "Start Game", BLUE, () =>
       this.scene.start("Game")
     );
 
-    // Leaderboard button
-    this.makeButton(W / 2, H * 0.72, "Leaderboard", DARK, () =>
+    // Leaderboard button (locked until wallet connected)
+    this.leaderboardBtn = this.makeButton(W / 2, H * 0.72, "Leaderboard", DARK, () =>
       this.scene.start("Leaderboard")
     );
 
+    this.setButtonEnabled(this.startBtn, false);
+    this.setButtonEnabled(this.leaderboardBtn, false);
+
     // Restore connected state if returning from game
     this.refreshConnectionUI();
+  }
+
+  setButtonEnabled(btn, enabled) {
+    const [bg, txt] = btn.list;
+    if (enabled) {
+      bg.setInteractive({ useHandCursor: true });
+      bg.setAlpha(1);
+      txt.setAlpha(1);
+    } else {
+      bg.disableInteractive();
+      bg.setAlpha(0.35);
+      txt.setAlpha(0.35);
+    }
   }
 
   makeButton(x, y, label, color, callback) {
@@ -105,6 +121,8 @@ export class MenuScene extends Phaser.Scene {
       const name = getDisplayName() ?? "Connected";
       this.playerText.setText(`Connected: ${name}`);
       this.connectBtn.setVisible(false);
+      this.setButtonEnabled(this.startBtn, true);
+      this.setButtonEnabled(this.leaderboardBtn, true);
     }
   }
 
